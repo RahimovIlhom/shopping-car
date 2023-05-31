@@ -58,11 +58,12 @@ class CarViewSet(viewsets.ViewSet):
 
 
 class BusyCarViewSet(viewsets.ViewSet):
-    queryset = Car.objects.filter(is_active=False)
+    queryset = Car.objects.filter()
     serializer_class = CarSerializer
 
     def list(self, request):
-        serializers = CarSerializer(self.queryset, many=True, context=self.get_serializers_context())
+        queryset = self.queryset.filter(is_active=False)
+        serializers = CarSerializer(queryset, many=True, context=self.get_serializers_context())
         return Response(serializers.data)
 
     def retrieve(self, request, pk=None):
