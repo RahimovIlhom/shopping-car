@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Car(models.Model):
+    username = models.CharField(max_length=30, null=True, blank=True)
     brand = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.PositiveIntegerField()
