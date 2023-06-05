@@ -29,10 +29,12 @@ class CarViewSet(viewsets.ViewSet):
     def update(self, request, pk=None):
         car = get_object_or_404(self.queryset, pk=pk)
         serializer = CarSerializer(car, context=self.get_serializers_context())
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.method == 'PUT':
+            serializer = CarSerializer(car, data=request.data, context=self.get_serializers_context())
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, pk=None):
         car = get_object_or_404(self.queryset, pk=pk)
